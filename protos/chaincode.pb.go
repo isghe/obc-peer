@@ -63,6 +63,26 @@ func (x ChaincodeSpec_Type) String() string {
 	return proto.EnumName(ChaincodeSpec_Type_name, int32(x))
 }
 
+type ChaincodeDeploymentSpec_ExecutionEnvironment int32
+
+const (
+	ChaincodeDeploymentSpec_DOCKER ChaincodeDeploymentSpec_ExecutionEnvironment = 0
+	ChaincodeDeploymentSpec_SYSTEM ChaincodeDeploymentSpec_ExecutionEnvironment = 1
+)
+
+var ChaincodeDeploymentSpec_ExecutionEnvironment_name = map[int32]string{
+	0: "DOCKER",
+	1: "SYSTEM",
+}
+var ChaincodeDeploymentSpec_ExecutionEnvironment_value = map[string]int32{
+	"DOCKER": 0,
+	"SYSTEM": 1,
+}
+
+func (x ChaincodeDeploymentSpec_ExecutionEnvironment) String() string {
+	return proto.EnumName(ChaincodeDeploymentSpec_ExecutionEnvironment_name, int32(x))
+}
+
 type ChaincodeMessage_Type int32
 
 const (
@@ -201,8 +221,9 @@ func (m *ChaincodeSpec) GetCtorMsg() *ChaincodeInput {
 type ChaincodeDeploymentSpec struct {
 	ChaincodeSpec *ChaincodeSpec `protobuf:"bytes,1,opt,name=chaincodeSpec" json:"chaincodeSpec,omitempty"`
 	// Controls when the chaincode becomes executable.
-	EffectiveDate *google_protobuf.Timestamp `protobuf:"bytes,2,opt,name=effectiveDate" json:"effectiveDate,omitempty"`
-	CodePackage   []byte                     `protobuf:"bytes,3,opt,name=codePackage,proto3" json:"codePackage,omitempty"`
+	EffectiveDate *google_protobuf.Timestamp                   `protobuf:"bytes,2,opt,name=effectiveDate" json:"effectiveDate,omitempty"`
+	CodePackage   []byte                                       `protobuf:"bytes,3,opt,name=codePackage,proto3" json:"codePackage,omitempty"`
+	ExecEnv       ChaincodeDeploymentSpec_ExecutionEnvironment `protobuf:"varint,4,opt,name=execEnv,enum=protos.ChaincodeDeploymentSpec_ExecutionEnvironment" json:"execEnv,omitempty"`
 }
 
 func (m *ChaincodeDeploymentSpec) Reset()         { *m = ChaincodeDeploymentSpec{} }
@@ -239,63 +260,25 @@ func (m *ChaincodeInvocationSpec) GetChaincodeSpec() *ChaincodeSpec {
 	return nil
 }
 
-// TODO: Merge this with ChaincodeID.
-type ChaincodeIdentifier struct {
-	// URL for accessing the Chaincode, eg. https://github.com/user/SampleContract
-	Url string `protobuf:"bytes,1,opt,name=Url" json:"Url,omitempty"`
+type ChaincodeSecurityContext struct {
+	CallerCert     []byte `protobuf:"bytes,1,opt,name=callerCert,proto3" json:"callerCert,omitempty"`
+	CallerSign     []byte `protobuf:"bytes,2,opt,name=callerSign,proto3" json:"callerSign,omitempty"`
+	Payload        []byte `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
+	Binding        []byte `protobuf:"bytes,4,opt,name=binding,proto3" json:"binding,omitempty"`
+	Metadata       []byte `protobuf:"bytes,5,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	ParentMetadata []byte `protobuf:"bytes,6,opt,name=parentMetadata,proto3" json:"parentMetadata,omitempty"`
 }
 
-func (m *ChaincodeIdentifier) Reset()         { *m = ChaincodeIdentifier{} }
-func (m *ChaincodeIdentifier) String() string { return proto.CompactTextString(m) }
-func (*ChaincodeIdentifier) ProtoMessage()    {}
-
-// Used by the peer to identify the requesting chaincode and allows for proper
-// access to state.
-type ChaincodeRequestContext struct {
-	Id *ChaincodeIdentifier `protobuf:"bytes,1,opt,name=Id" json:"Id,omitempty"`
-}
-
-func (m *ChaincodeRequestContext) Reset()         { *m = ChaincodeRequestContext{} }
-func (m *ChaincodeRequestContext) String() string { return proto.CompactTextString(m) }
-func (*ChaincodeRequestContext) ProtoMessage()    {}
-
-func (m *ChaincodeRequestContext) GetId() *ChaincodeIdentifier {
-	if m != nil {
-		return m.Id
-	}
-	return nil
-}
-
-// Provided by the peer to the chaincode to identify the requesting chaincode
-// and allow for proper access to state.
-type ChaincodeExecutionContext struct {
-	ChaincodeId *ChaincodeIdentifier       `protobuf:"bytes,1,opt,name=ChaincodeId" json:"ChaincodeId,omitempty"`
-	Timestamp   *google_protobuf.Timestamp `protobuf:"bytes,2,opt,name=Timestamp" json:"Timestamp,omitempty"`
-}
-
-func (m *ChaincodeExecutionContext) Reset()         { *m = ChaincodeExecutionContext{} }
-func (m *ChaincodeExecutionContext) String() string { return proto.CompactTextString(m) }
-func (*ChaincodeExecutionContext) ProtoMessage()    {}
-
-func (m *ChaincodeExecutionContext) GetChaincodeId() *ChaincodeIdentifier {
-	if m != nil {
-		return m.ChaincodeId
-	}
-	return nil
-}
-
-func (m *ChaincodeExecutionContext) GetTimestamp() *google_protobuf.Timestamp {
-	if m != nil {
-		return m.Timestamp
-	}
-	return nil
-}
+func (m *ChaincodeSecurityContext) Reset()         { *m = ChaincodeSecurityContext{} }
+func (m *ChaincodeSecurityContext) String() string { return proto.CompactTextString(m) }
+func (*ChaincodeSecurityContext) ProtoMessage()    {}
 
 type ChaincodeMessage struct {
-	Type      ChaincodeMessage_Type      `protobuf:"varint,1,opt,name=type,enum=protos.ChaincodeMessage_Type" json:"type,omitempty"`
-	Timestamp *google_protobuf.Timestamp `protobuf:"bytes,2,opt,name=timestamp" json:"timestamp,omitempty"`
-	Payload   []byte                     `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
-	Uuid      string                     `protobuf:"bytes,4,opt,name=uuid" json:"uuid,omitempty"`
+	Type            ChaincodeMessage_Type      `protobuf:"varint,1,opt,name=type,enum=protos.ChaincodeMessage_Type" json:"type,omitempty"`
+	Timestamp       *google_protobuf.Timestamp `protobuf:"bytes,2,opt,name=timestamp" json:"timestamp,omitempty"`
+	Payload         []byte                     `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
+	Uuid            string                     `protobuf:"bytes,4,opt,name=uuid" json:"uuid,omitempty"`
+	SecurityContext *ChaincodeSecurityContext  `protobuf:"bytes,5,opt,name=securityContext" json:"securityContext,omitempty"`
 }
 
 func (m *ChaincodeMessage) Reset()         { *m = ChaincodeMessage{} }
@@ -305,6 +288,13 @@ func (*ChaincodeMessage) ProtoMessage()    {}
 func (m *ChaincodeMessage) GetTimestamp() *google_protobuf.Timestamp {
 	if m != nil {
 		return m.Timestamp
+	}
+	return nil
+}
+
+func (m *ChaincodeMessage) GetSecurityContext() *ChaincodeSecurityContext {
+	if m != nil {
+		return m.SecurityContext
 	}
 	return nil
 }
@@ -372,6 +362,7 @@ func (m *RangeQueryStateResponse) GetKeysAndValues() []*RangeQueryStateKeyValue 
 func init() {
 	proto.RegisterEnum("protos.ConfidentialityLevel", ConfidentialityLevel_name, ConfidentialityLevel_value)
 	proto.RegisterEnum("protos.ChaincodeSpec_Type", ChaincodeSpec_Type_name, ChaincodeSpec_Type_value)
+	proto.RegisterEnum("protos.ChaincodeDeploymentSpec_ExecutionEnvironment", ChaincodeDeploymentSpec_ExecutionEnvironment_name, ChaincodeDeploymentSpec_ExecutionEnvironment_value)
 	proto.RegisterEnum("protos.ChaincodeMessage_Type", ChaincodeMessage_Type_name, ChaincodeMessage_Type_value)
 }
 
@@ -382,8 +373,6 @@ var _ grpc.ClientConn
 // Client API for ChaincodeSupport service
 
 type ChaincodeSupportClient interface {
-	// Return the datetime.
-	GetExecutionContext(ctx context.Context, in *ChaincodeRequestContext, opts ...grpc.CallOption) (*ChaincodeExecutionContext, error)
 	Register(ctx context.Context, opts ...grpc.CallOption) (ChaincodeSupport_RegisterClient, error)
 }
 
@@ -393,15 +382,6 @@ type chaincodeSupportClient struct {
 
 func NewChaincodeSupportClient(cc *grpc.ClientConn) ChaincodeSupportClient {
 	return &chaincodeSupportClient{cc}
-}
-
-func (c *chaincodeSupportClient) GetExecutionContext(ctx context.Context, in *ChaincodeRequestContext, opts ...grpc.CallOption) (*ChaincodeExecutionContext, error) {
-	out := new(ChaincodeExecutionContext)
-	err := grpc.Invoke(ctx, "/protos.ChaincodeSupport/GetExecutionContext", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *chaincodeSupportClient) Register(ctx context.Context, opts ...grpc.CallOption) (ChaincodeSupport_RegisterClient, error) {
@@ -438,25 +418,11 @@ func (x *chaincodeSupportRegisterClient) Recv() (*ChaincodeMessage, error) {
 // Server API for ChaincodeSupport service
 
 type ChaincodeSupportServer interface {
-	// Return the datetime.
-	GetExecutionContext(context.Context, *ChaincodeRequestContext) (*ChaincodeExecutionContext, error)
 	Register(ChaincodeSupport_RegisterServer) error
 }
 
 func RegisterChaincodeSupportServer(s *grpc.Server, srv ChaincodeSupportServer) {
 	s.RegisterService(&_ChaincodeSupport_serviceDesc, srv)
-}
-
-func _ChaincodeSupport_GetExecutionContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
-	in := new(ChaincodeRequestContext)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	out, err := srv.(ChaincodeSupportServer).GetExecutionContext(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func _ChaincodeSupport_Register_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -488,12 +454,7 @@ func (x *chaincodeSupportRegisterServer) Recv() (*ChaincodeMessage, error) {
 var _ChaincodeSupport_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "protos.ChaincodeSupport",
 	HandlerType: (*ChaincodeSupportServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetExecutionContext",
-			Handler:    _ChaincodeSupport_GetExecutionContext_Handler,
-		},
-	},
+	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Register",

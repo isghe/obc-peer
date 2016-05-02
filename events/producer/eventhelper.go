@@ -20,10 +20,10 @@ under the License.
 package producer
 
 import (
-	ehpb "github.com/openblockchain/obc-peer/protos"
+	ehpb "github.com/hyperledger/fabric/protos"
 )
 
-//CreateBlockEvent creates a OpenchainEvent from a Block
-func CreateBlockEvent(te *ehpb.Block) *ehpb.OpenchainEvent {
-	return &ehpb.OpenchainEvent{&ehpb.OpenchainEvent_Block{Block: te}}
+//CreateBlockEvent creates a Event from a Block
+func CreateBlockEvent(te *ehpb.Block) *ehpb.Event {
+	return &ehpb.Event{&ehpb.Event_Block{Block: te}}
 }
