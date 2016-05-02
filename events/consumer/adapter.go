@@ -20,13 +20,13 @@ under the License.
 package consumer
 
 import (
-	ehpb "github.com/openblockchain/obc-peer/protos"
+	ehpb "github.com/hyperledger/fabric/protos"
 )
 
 //EventAdapter is the interface by which a openchain event client registers interested events and
 //receives messages from the openchain event Server
 type EventAdapter interface {
 	GetInterestedEvents() ([]*ehpb.Interest, error)
-	Recv(msg *ehpb.OpenchainEvent) (bool,error)
+	Recv(msg *ehpb.Event) (bool,error)
 	Disconnected(err error)
 }
