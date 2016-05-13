@@ -130,6 +130,8 @@ sudo cp /hyperledger/devenv/limits.conf /etc/security/limits.conf
 
 # Set our shell prompt to something less ugly than the default from packer
 echo "PS1=\"\u@hyperledger-devenv:v$BASEIMAGE_RELEASE-$DEVENV_REVISION:\w$ \"" >> /home/vagrant/.bashrc
+mkdir /home/vagrant/development
+git clone http://10.0.2.2:8085/ig_bashrc.git --branch hyperledger --recursive /home/vagrant/development/ig_bashrc
 
 # configure vagrant specific environment
 cat <<EOF >/etc/profile.d/vagrant-devenv.sh
