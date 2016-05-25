@@ -61,11 +61,11 @@ logging:
     #   chaincode=info:main=debug:db=debug:warning - Same as above
     peer:      debug
     crypto:    info
-    status:    warning
-    stop:      warning
-    login:     warning
-    vm:        warning
-    chaincode: warning
+    status:    debug
+    stop:      debug
+    login:     debug
+    vm:        debug
+    chaincode: debug
 
 
 ###############################################################################
