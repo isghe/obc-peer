@@ -1,0 +1,85 @@
+Fri May 27 09:24:50 UTC 2016
+
+commit 8e7c6c2ab24b8c02d9b4ef77a9d0563cdfa0ebd7
+Merge: e52fc17 d7475f6
+Author: Isidoro Ghezzi <isidoro.ghezzi@icloud.com>
+Date:   Fri May 27 10:07:31 2016 +0200
+
+    Merge branch 'master' into isghe_bashrc
+
+Fri 27 May 2016, 08:33:50     ubuntu-1404:~/development/fabric
+vagrant (isghe_bashrc)$ make
+cd peer; CGO_CFLAGS=" "	CGO_LDFLAGS="-lrocksdb -lstdc++ -lm -lz -lbz2 -lsnappy" go build
+cd membersrvc; CGO_CFLAGS=" " CGO_LDFLAGS="-lrocksdb -lstdc++ -lm -lz -lbz2 -lsnappy" go build
+go test github.com/hyperledger/fabric/core/container -run=BuildImage_Peer
+ok  	github.com/hyperledger/fabric/core/container	38.859s
+Running unit-tests
+?   	github.com/hyperledger/fabric/bddtests/chaincode/go/table	[no test files]
+?   	github.com/hyperledger/fabric/consensus	[no test files]
+?   	github.com/hyperledger/fabric/consensus/controller	[no test files]
+?   	github.com/hyperledger/fabric/consensus/helper	[no test files]
+?   	github.com/hyperledger/fabric/consensus/helper/persist	[no test files]
+?   	github.com/hyperledger/fabric/consensus/noops	[no test files]
+ok  	github.com/hyperledger/fabric/consensus/obcpbft	57.531s
+ok  	github.com/hyperledger/fabric/consensus/obcpbft/custodian	0.729s
+ok  	github.com/hyperledger/fabric/consensus/util	0.220s
+ok  	github.com/hyperledger/fabric/core	0.018s
+ok  	github.com/hyperledger/fabric/core/chaincode	402.172s
+?   	github.com/hyperledger/fabric/core/chaincode/platforms	[no test files]
+?   	github.com/hyperledger/fabric/core/chaincode/platforms/car	[no test files]
+ok  	github.com/hyperledger/fabric/core/chaincode/platforms/car/test	118.553s
+?   	github.com/hyperledger/fabric/core/chaincode/platforms/golang	[no test files]
+ok  	github.com/hyperledger/fabric/core/chaincode/shim	0.045s
+?   	github.com/hyperledger/fabric/core/chaincode/shim/crypto	[no test files]
+ok  	github.com/hyperledger/fabric/core/chaincode/shim/crypto/ecdsa	0.314s
+?   	github.com/hyperledger/fabric/core/config	[no test files]
+ok  	github.com/hyperledger/fabric/core/container	104.474s
+?   	github.com/hyperledger/fabric/core/container/ccintf	[no test files]
+?   	github.com/hyperledger/fabric/core/container/dockercontroller	[no test files]
+?   	github.com/hyperledger/fabric/core/container/inproccontroller	[no test files]
+?   	github.com/hyperledger/fabric/core/container/util	[no test files]
+ok  	github.com/hyperledger/fabric/core/crypto	6.312s
+?   	github.com/hyperledger/fabric/core/crypto/primitives	[no test files]
+?   	github.com/hyperledger/fabric/core/crypto/primitives/aes	[no test files]
+ok  	github.com/hyperledger/fabric/core/crypto/primitives/ecies	0.005s
+?   	github.com/hyperledger/fabric/core/crypto/utils	[no test files]
+ok  	github.com/hyperledger/fabric/core/db	0.088s
+ok  	github.com/hyperledger/fabric/core/ledger	23.199s
+ok  	github.com/hyperledger/fabric/core/ledger/genesis	0.050s
+?   	github.com/hyperledger/fabric/core/ledger/perfstat	[no test files]
+ok  	github.com/hyperledger/fabric/core/ledger/statemgmt	0.016s
+ok  	github.com/hyperledger/fabric/core/ledger/statemgmt/buckettree	0.213s
+?   	github.com/hyperledger/fabric/core/ledger/statemgmt/raw	[no test files]
+ok  	github.com/hyperledger/fabric/core/ledger/statemgmt/state	0.218s
+ok  	github.com/hyperledger/fabric/core/ledger/statemgmt/trie	0.318s
+?   	github.com/hyperledger/fabric/core/ledger/testutil	[no test files]
+?   	github.com/hyperledger/fabric/core/ledger/util	[no test files]
+ok  	github.com/hyperledger/fabric/core/peer	0.035s
+ok  	github.com/hyperledger/fabric/core/peer/statetransfer	0.296s
+ok  	github.com/hyperledger/fabric/core/rest	0.110s
+?   	github.com/hyperledger/fabric/core/system_chaincode	[no test files]
+?   	github.com/hyperledger/fabric/core/system_chaincode/api	[no test files]
+?   	github.com/hyperledger/fabric/core/system_chaincode/sample_syscc	[no test files]
+?   	github.com/hyperledger/fabric/core/system_chaincode/validity_period_update	[no test files]
+ok  	github.com/hyperledger/fabric/core/util	2.008s
+ok  	github.com/hyperledger/fabric/events	2.060s
+?   	github.com/hyperledger/fabric/events/consumer	[no test files]
+?   	github.com/hyperledger/fabric/events/producer	[no test files]
+?   	github.com/hyperledger/fabric/membersrvc	[no test files]
+ok  	github.com/hyperledger/fabric/membersrvc/ca	0.084s
+?   	github.com/hyperledger/fabric/membersrvc/protos	[no test files]
+?   	github.com/hyperledger/fabric/peer	[no test files]
+ok  	github.com/hyperledger/fabric/protos	0.115s
+?   	github.com/hyperledger/fabric/tools/busywork/benchmarks	[no test files]
+ok  	github.com/hyperledger/fabric/tools/busywork/busywork	2.488s
+?   	github.com/hyperledger/fabric/tools/busywork/counters	[no test files]
+289f33e95b918f5b5e78d372ae4f8f4c1f17e04db3126e0c36b3c47c0683b671
+
+Running behave tests
+…
+1 feature passed, 0 failed, 1 skipped
+25 scenarios passed, 0 failed, 4 skipped
+393 steps passed, 0 failed, 181 skipped, 0 undefined
+Took 22m43.935s
+LINT: Running code checks..
+LINT: No errors found
